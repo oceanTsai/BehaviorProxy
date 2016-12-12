@@ -1,0 +1,61 @@
+{
+  "name": "behavior-proxy-oc",
+  "version": "1.0.0",
+  "description": "toggle behavior proxy.",
+  "main": "lib/behaviorProxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel -d lib/ src/ && npm run browserify && npm run minJs",
+    "browserify": "./node_modules/.bin/browserify ./lib/behaviorProxy.js -o ./example/behaviorProxy.js",
+    "minJs": "./node_modules/.bin/uglifyjs ./example/behaviorProxy.js -o ./example/behaviorProxy.min.js",
+    "httpServer": "node ./node_modules/.bin/http-server ./example -p 9527",
+    "start": "npm run build && npm run httpServer"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oceanTsai/BehaviorProxy.git"
+  },
+  "keywords": [
+    "toggle",
+    "behavior",
+    "proxy"
+  ],
+  "author": "ocean",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oceanTsai/BehaviorProxy/issues"
+  },
+  "homepage": "https://github.com/oceanTsai/BehaviorProxy#readme",
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0",
+      "react"
+    ]
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015",
+            "stage-0",
+            "react"
+          ]
+        }
+      ]
+    ]
+  },
+    "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.1",
+    "general-util": "^1.0.1",
+    "http-server": "^0.9.0",
+    "uglify-js": "^2.7.5"
+  }
+}

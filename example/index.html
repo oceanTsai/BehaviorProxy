@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+	<meta charset="UTF-8">
+	<title>Toggle Behavior Proxy</title>
+	<script type="text/javascript" src='./behaviorProxy.js'></script>
+	<style type="text/css">
+		.btn{
+			background: #E0E0E0;
+			display: inline-block;
+			padding: 0.4em 0.4em;
+			margin-right: 0.4em;
+			cursor: pointer;
+			border: 1px solid #BDBDBD;
+		}
+
+		.btn.active{
+			background: #4FC3F7;
+			border: 1px solid #29B6F6;
+		}
+
+	</style>
+</head>
+<body>
+	<div id='toggle'>
+
+	</div>
+	<script type="text/javascript">
+		console.log(window.behaviorProxy);
+		(function(document, proxy) {
+			let list = [
+				{
+					checked : '',
+					source : {title :'mac book' 	, value:'1' }
+				}, 
+				{
+					checked : '',
+					source : {title :'iphone7' 	, value:'2' }
+				}
+			];
+			
+			let toggle = document.querySelector('#toggle');
+
+			console.log('-------------');
+			console.log('list', list);
+
+			onClick = function(e){
+				//run proxy
+				proxy.mutilToggle(list, 'value', e.currentTarget.value)
+				console.log('new list', list)
+				//re render
+				while (toggle.hasChildNodes()) {
+    			toggle.removeChild(toggle.lastChild);
+				}
+				render()
+			}
+
+			render=function(){
+				list.forEach(function(item){
+				let btn = document.createElement("BUTTON");
+				btn.value = item.source.value
+				
+				btn.appendChild(document.createTextNode(item.source.title));
+				btn.classList.add('btn');
+				item.checked == 'checked' && (btn.classList.add('active'))
+				btn.onclick=onClick;
+
+				toggle.appendChild(btn);
+			})
+			}
+			
+			render()
+
+		})(document, window.behaviorProxy);
+	</script>
+</body>
+</html>
