@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.mutilToggle = exports.singleToggle = exports.multiToggleItem = exports.singleToggleItem = exports.unSelectAll = exports.selectAll = undefined;
+exports.toSpecialListOfDecorator = exports.toSpecialList = exports.filterChecked = exports.mutilToggle = exports.singleToggle = exports.multiToggleItem = exports.singleToggleItem = exports.unSelectAll = exports.selectAll = undefined;
 
 var _generalUtil = require('general-util');
 
@@ -93,11 +93,44 @@ var mutilToggle = exports.mutilToggle = function mutilToggle(list, idField, beha
 	});
 };
 
+//filter active item
+var filterChecked = exports.filterChecked = function filterChecked(list) {
+	var toggleField = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultSelectKey;
+	var activeVal = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultSelectVal;
+
+	return (0, _generalUtil.hasVal)(list) && list.filter(function (item) {
+		return item[toggleField] == activeVal;
+	}) || null;
+};
+
+//convter active item list to special list
+var toSpecialList = exports.toSpecialList = function toSpecialList(list, specificKey) {
+	var toggleField = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultSelectKey;
+
+	var activeList = filterChecked(list);
+	return (0, _generalUtil.hasVal)(activeList) && (0, _generalUtil.hasVal)(specificKey) ? activeList.map(function (item) {
+		return item[specificKey];
+	}) : null;
+};
+
+//convter active item lsit to special list of Decorator Data List
+var toSpecialListOfDecorator = exports.toSpecialListOfDecorator = function toSpecialListOfDecorator(list, specificKey) {
+	var toggleField = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultSelectKey;
+
+	var activeList = filterChecked(list);
+	return (0, _generalUtil.hasVal)(activeList) && (0, _generalUtil.hasVal)(specificKey) ? activeList.map(function (item) {
+		return item.source[specificKey];
+	}) : null;
+};
+
 var behaviorProxy = {
 	selectAll: selectAll,
 	unSelectAll: unSelectAll,
 	singleToggle: singleToggle,
-	mutilToggle: mutilToggle
+	mutilToggle: mutilToggle,
+	filterChecked: filterChecked,
+	toSpecialList: toSpecialList,
+	toSpecialListOfDecorator: toSpecialListOfDecorator
 };
 
 if (!window.behaviorProxy) {

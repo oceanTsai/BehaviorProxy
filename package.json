@@ -1,6 +1,6 @@
 {
   "name": "behavior-proxy-oc",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "toggle behavior proxy.",
   "main": "lib/behaviorProxy.js",
   "scripts": {

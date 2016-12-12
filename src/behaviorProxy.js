@@ -72,11 +72,33 @@ export const mutilToggle=(list, idField, behaviorVal, toggleField=defaultSelectK
 	})
 }
 
+//filter active item
+export const filterChecked=(list, toggleField=defaultSelectKey, activeVal=defaultSelectVal)=>{
+	return hasVal(list) && list.filter((item)=>(item[toggleField]==activeVal)) || null
+}
+
+//convter active item list to special list
+export const toSpecialList=(list, specificKey, toggleField=defaultSelectKey)=>{
+	let activeList = filterChecked(list)
+	return hasVal(activeList) &&  hasVal(specificKey) ? activeList.map((item)=>(item[specificKey])) : null
+ 
+}
+
+//convter active item lsit to special list of Decorator Data List
+export const toSpecialListOfDecorator=(list, specificKey, toggleField=defaultSelectKey)=>{
+	let activeList = filterChecked(list)
+	return hasVal(activeList) &&  hasVal(specificKey) ? activeList.map((item)=>(item.source[specificKey])) : null
+}
+
+	
 const behaviorProxy = {
 	selectAll : selectAll,
 	unSelectAll : unSelectAll,
 	singleToggle : singleToggle,
-	mutilToggle : mutilToggle
+	mutilToggle : mutilToggle,
+	filterChecked : filterChecked,
+	toSpecialList : toSpecialList,
+	toSpecialListOfDecorator : toSpecialListOfDecorator	
 }
 
 if(!window.behaviorProxy){
