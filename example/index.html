@@ -2,6 +2,8 @@
 <html lang="zh-TW">
 <head>
 	<meta charset="UTF-8">
+	<meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+	<meta HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 	<title>Toggle Behavior Proxy</title>
 	<script type="text/javascript" src='./behaviorProxy.js'></script>
 	<style type="text/css">
@@ -22,9 +24,9 @@
 	</style>
 </head>
 <body>
-	<div id='toggle'>
-
-	</div>
+	<div id='toggle1'></div>
+	<br/>
+	<div id='toggle2'></div>
 	<script type="text/javascript">
 		console.log(window.behaviorProxy);
 		(function(document, proxy) {
@@ -38,38 +40,77 @@
 					source : {title :'iphone7' 	, value:'2' }
 				}
 			];
+
+			let listNoWrap = [
+				{
+					checked : '',
+					title :'高山茶',
+					value:'1'
+				}, 
+				{
+					checked : '',
+					title :'紅茶', 
+					value:'2'
+				}]
 			
-			let toggle = document.querySelector('#toggle');
+			let toggle1 = document.querySelector('#toggle1');
+			let toggle2 = document.querySelector('#toggle2');
 
 			console.log('-------------');
 			console.log('list', list);
 
 			onClick = function(e){
 				//run proxy
-				proxy.mutilToggle(list, 'value', e.currentTarget.value)
-				console.log('new list', list)
+				proxy.singleToggle(list, 'value', e.currentTarget.value);
+				//proxy.mutilToggle(list, 'value', e.currentTarget.value);
+				//proxy.radio(list, 'value', e.currentTarget.value);
+				console.log('new list', list);
 				//re render
-				while (toggle.hasChildNodes()) {
-    			toggle.removeChild(toggle.lastChild);
+				while (toggle1.hasChildNodes()) {
+    			toggle1.removeChild(toggle1.lastChild);
 				}
 				render()
 			}
 
+			onCLick2 = function(e){
+				//run proxy
+				//proxy.singleToggleByTile(listNoWrap, 'value', e.currentTarget.value);
+				proxy.mutilToggleByTile(listNoWrap, 'value', e.currentTarget.value);
+				//proxy.radioByTile(listNoWrap, 'value', e.currentTarget.value);
+				//console.log('new listNoWrap', listNoWrap);
+				//re render
+				while (toggle2.hasChildNodes()) {
+    			toggle2.removeChild(toggle2.lastChild);
+				}
+				render2()
+			}
+
 			render=function(){
 				list.forEach(function(item){
-				let btn = document.createElement("BUTTON");
-				btn.value = item.source.value
-				
-				btn.appendChild(document.createTextNode(item.source.title));
-				btn.classList.add('btn');
-				item.checked == 'checked' && (btn.classList.add('active'))
-				btn.onclick=onClick;
+					let btn = document.createElement("BUTTON");
+					btn.value = item.source.value
+					btn.appendChild(document.createTextNode(item.source.title));
+					btn.classList.add('btn');
+					item.checked == 'checked' && (btn.classList.add('active'))
+					btn.onclick=onClick;
+					toggle1.appendChild(btn);
+				})
+			}
 
-				toggle.appendChild(btn);
-			})
+			render2=function(){
+				listNoWrap.forEach(function(item){
+					let btn = document.createElement("BUTTON");
+					btn.value = item.value
+					btn.appendChild(document.createTextNode(item.title));
+					btn.classList.add('btn');
+					item.checked == 'checked' && (btn.classList.add('active'))
+					btn.onclick=onCLick2;
+					toggle2.appendChild(btn);
+				})
 			}
 			
 			render()
+			render2()
 
 		})(document, window.behaviorProxy);
 	</script>
